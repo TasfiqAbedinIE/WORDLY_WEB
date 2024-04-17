@@ -1,0 +1,6 @@
+section[data-testid='stSidebar'] {
+    background-color: #a2d2ff;
+    height: 100%;
+    width: 100px;
+    flex-shrink: unset !important;
+}

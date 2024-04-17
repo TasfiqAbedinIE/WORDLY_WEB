@@ -11,7 +11,7 @@ class LogIn:
         r1 = st.container()
         with r1:
             st.markdown(
-                "<p style='font-size: 5em; font-family: fantasy; text-align: center; color: #74c69d'>WORDLY</p>",
+                "<p style='font-size: 5em; font-family: fantasy; text-align: center; color: #a2d2ff'>WORDLY</p>",
                 unsafe_allow_html=True)
             st.markdown("")
             # st.markdown("")
@@ -24,15 +24,15 @@ class LogIn:
             st.markdown("""
                             <style>
                                 div.stButton > button:first-child {
-                                    background-color: #52b69a;
+                                    background-color: #a2d2ff;
                                     color: #ffffff;
-                                    border-color: #b5e48c;
+                                    border-color: #a2d2ff;
                                     width: 10em;
                                     height: 3em;
                                     margin-left: 15.5em;
                                 }
                                 div.stButton > button:first-child:hover {
-                                    background-color: #76c893;
+                                    background-color: #bde0fe;
                                 }
                             </style>""", unsafe_allow_html=True)
 
@@ -40,8 +40,9 @@ class LogIn:
                 username_matched, password_matched = firebaseConnection.login_user(username, password)
                 if username_matched and password_matched:
                     st.success("LogIn successful")
+                    st.session_state.logged_in = True
                     time.sleep(2)
-                    st.switch_page("pages/Learn_module.py")
+                    st.switch_page("pages/Record_module.py")
                 else:
                     st.error("Please check your Username and Password")
 
@@ -53,15 +54,15 @@ class LogIn:
             st.markdown("""
                             <style>
                                 div.stButton > button:first-child {
-                                    background-color: #52b69a;
+                                    background-color: #a2d2ff;
                                     color: #ffffff;
-                                    border-color: #b5e48c;
+                                    border-color: #a2d2ff;
                                     width: 10em;
                                     height: 3em;
                                     margin-left: 15.5em;
                                 }
                                 div.stButton > button:first-child:hover {
-                                    background-color: #76c893;
+                                    background-color: #bde0fe;
                                 }
                             </style>""", unsafe_allow_html=True)
             if signup_button:

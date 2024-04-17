@@ -7,7 +7,7 @@ class Page_config:
     def __init__(self):
         super().__init__()
         st.set_page_config(
-            page_title="LOG IN - SQUARE DMS",
+            page_title="WORDLY - A PLACE FOR YOUR WORDS",
             initial_sidebar_state="collapsed"
         )
         st.markdown(
