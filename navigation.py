@@ -14,8 +14,13 @@ class Side_Bar:
         st.switch_page("main.py")
 
     def authenticated_menu(self):
+        username = st.session_state.get('username')
+        st.sidebar.markdown(f"Welcome, {username}")
         st.sidebar.page_link("pages/Record_module.py", label="RECORD")
         st.sidebar.page_link("pages/Learn_module.py", label="LEARN")
+        st.markdown("")
+        st.markdown("")
+        st.markdown("")
         if st.sidebar.button("Log out"):
                         self.logout()
                         st.markdown("""
