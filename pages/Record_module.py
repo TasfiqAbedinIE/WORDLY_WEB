@@ -1,5 +1,7 @@
 import streamlit as st
 from navigation import Side_Bar
+import random
+from firebase_admin import credentials, db, firestore
 
 class streamlit_page_config:
     st.set_page_config(
@@ -20,3 +22,38 @@ class streamlit_page_config:
 streamlit_page_config()
 side_bar = Side_Bar()
 side_bar.authenticated_menu()
+
+
+@st.cache_data
+def retrieve_words():
+    db = firestore.client()
+    collection_ref = db.collection("Words")
+    docs = collection_ref.stream()
+
+    word_list = [doc.to_dict() for doc in docs]
+    return word_list
+
+
+word_list = retrieve_words()
+
+title = ("""<div style="text-align: center;">
+            <h1 style="color: #0077b6">WORDLY</h1>
+        </div>""")
+st.html(title)
+
+card_container = st.container(border=True, height=400)
+def random_gen():
+    num = random.randint(0, len(word_list))
+    print(num)
+    st.session_state.word = num
+
+with card_container:
+    card = f"""
+        <div style="text-align: center">
+            <h1>{word_list[st.session_state.get("word")]['word']}</h1>
+        </div>
+    """
+    st.html(card)
+
+    if st.button("Next"):
+        random_gen()

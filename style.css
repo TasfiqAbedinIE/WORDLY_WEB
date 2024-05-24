@@ -4,3 +4,6 @@ section[data-testid='stSidebar'] {
     width: 100px;
     flex-shrink: unset !important;
 }
+.title{
+    text_align: center;
+}
