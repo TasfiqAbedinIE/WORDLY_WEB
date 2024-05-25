@@ -43,7 +43,7 @@ class LogIn:
                     st.session_state.logged_in = True
                     time.sleep(2)
                     st.session_state.username = username
-                    st.switch_page("pages/Record_module.py")
+                    st.switch_page("pages/Study_board.py")
                 else:
                     st.error("Please check your Username and Password")
 
