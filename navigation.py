@@ -16,8 +16,8 @@ class Side_Bar:
     def authenticated_menu(self):
         username = st.session_state.get('username')
         st.sidebar.markdown(f"Welcome, {username}")
-        st.sidebar.page_link("pages/Study_board.py", label="STUDY BOARD")
-        st.sidebar.page_link("pages/Learn_module.py", label="LEARN")
+        st.sidebar.page_link("pages/Study_board.py", label="STUDY BOARD", icon=":material/app_registration:")
+        st.sidebar.page_link("pages/Dictionary.py", label="DICTIONARY", icon=":material/dictionary:")
         st.markdown("")
         st.markdown("")
         st.markdown("")

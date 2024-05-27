@@ -11,7 +11,7 @@ class LogIn:
         r1 = st.container()
         with r1:
             st.markdown(
-                "<p style='font-size: 5em; font-family: fantasy; text-align: center; color: #a2d2ff'>WORDLY</p>",
+                "<p style='font-size: 6vw; font-family: fantasy; text-align: center; color: #a2d2ff'>WORDLY</p>",
                 unsafe_allow_html=True)
             st.markdown("")
             # st.markdown("")
@@ -60,7 +60,7 @@ class LogIn:
                                     border-color: #a2d2ff;
                                     width: 10em;
                                     height: 3em;
-                                    margin-left: 15.5em;
+                                    margin-left: 15.5vw;
                                 }
                                 div.stButton > button:first-child:hover {
                                     background-color: #bde0fe;

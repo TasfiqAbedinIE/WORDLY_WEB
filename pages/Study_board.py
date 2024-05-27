@@ -43,8 +43,8 @@ title = ("""<div style="text-align: center;">
         </div>""")
 st.html(title)
 
-card_container = st.container(border=True)
-
+card_container = st.container(border=True, height=400)
+number = 0
 
 def random_gen():
     num = random.randint(0, len(word_list) - 1)
@@ -52,35 +52,50 @@ def random_gen():
     st.session_state.word = num
 
 
-with card_container:
-    try:
-        card = f"""
-                <div style="text-align: center; margin-bottom: 15vh">
-                    <h1>{word_list[st.session_state.get("word")]['word'].upper()}</h1>
-                    <p>{word_list[st.session_state.get("word")]['psp']}</p>
-                    <p style="font-size: 1.5vw">{word_list[st.session_state.get("word")]['definition']}</p>
-                    <p>{word_list[st.session_state.get("word")]['example']}</p>
-                </div>
-                """
-        st.html(card)
+def display_word_function():
+    with card_container:
+        try:
+            card = f"""
+                    <div style="text-align: center; margin-bottom: 15vh">
+                        <h1>{word_list[st.session_state.get("word")]['word'].upper()}</h1>
+                        <p>{word_list[st.session_state.get("word")]['psp']}</p>
+                        <p style="font-size: 24px; font-weight: bold">{word_list[st.session_state.get("word")]['definition']}</p>
+                        <p>{word_list[st.session_state.get("word")]['example']}</p>
+                    </div>
+                    """
+            st.html(card)
 
-    except:
-        card = f"""
-                <div style="text-align: center">
-                    <h1>Press Next to Start</h1>
-                </div>
-                """
-        st.html(card)
+        except:
+            card = f"""
+                    <div style="text-align: center">
+                        <h1>Press Next to Start</h1>
+                    </div>
+                    """
+            st.html(card)
 
-    btn1, btn2, btn3 = st.columns((2, 15, 2))
-    with btn1:
-        if st.button("LEARNED"):
-            pass
-    with btn2:
+# display_word_function()
+# if st.session_state.get("word") == None:
+#     with card_container:
+#         card = f"""
+#                     <div style="text-align: center">
+#                         <h1>Press Next to Start</h1>
+#                     </div>
+#                 """
+#         st.html(card)
+
+print(st.session_state.get("word"))
+
+btn1, btn2, btn3 = st.columns((2, 15, 2))
+with btn1:
+    if st.button("LEARNED", use_container_width=True):
         pass
-    with btn3:
-        if st.button("NEXT"):
-            random_gen()
+with btn2:
+    pass
+with btn3:
+    if st.button("NEXT", use_container_width=True):
+        random_gen()
+        display_word_function()
+
 
 record_container = st.container()
 with record_container:
@@ -125,3 +140,4 @@ with record_container:
 
     if st.button("REGISTER NEW WORD"):
         word_register_screen()
+        display_word_function()
