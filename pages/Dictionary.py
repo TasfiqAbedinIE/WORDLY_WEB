@@ -2,6 +2,7 @@ import streamlit as st
 from navigation import Side_Bar
 from datetime import datetime
 import requests
+from firebase_admin import credentials, db, firestore
 
 api_address = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
@@ -89,7 +90,7 @@ def get_word_meaning(url, get_word):
         audio = phonetic.get('audio', 'N/A')
         print(f"Phonetic: {text}, Audio: {audio}")
 
-    return word, definitions, synonyms, antonyms
+    return word, definitions, synonyms, antonyms, part_of_speech
 
 r1c1, r1c2 = st.columns([8, 2])
 with r1c1:
@@ -98,26 +99,80 @@ with r1c1:
 with r1c2:
     if st.button("SEARCH", use_container_width=True):
         try:
-            word, definitions, synonyms, antonyms = get_word_meaning(api_address, search_word)
-            print(word, definitions, synonyms, antonyms)
+            word, definitions, synonyms, antonyms, pos = get_word_meaning(api_address, search_word)
+            # print(word, definitions, synonyms, antonyms)
         except:
             error = True
             error_message = "No Data Found, please check your spelling or word."
 
-def display_word_meaning(word, definitions, synonyms, antonyms):
-    st.markdown(f"<h2>{word.upper()}</h2>", unsafe_allow_html=True)
-    st.markdown("<h4>Definition:</h4>", unsafe_allow_html=True)
+def display_word_meaning(word, definitions, synonyms, antonyms, pos):
+    # display_pos = ','.join(map(str, pos))
+    st.markdown(f"<p style='font-size: 2vw; font-weight: bold'>{word.upper()}, <span style='font-size: 1vw; color:#3a86ff'>{pos}</span></p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size: 2vw; font-weight: bold; color:#3a86ff'>Definition:</p>", unsafe_allow_html=True)
     for i in range(len(definitions)):
         st.markdown(f"<li>{definitions[i]}</li>", unsafe_allow_html=True)
+
+    syn_col, ant_col = st.columns(2)
+    with syn_col:
+        st.markdown("<p style='font-size: 2vw; font-weight: bold; color:#3a86ff'>Synonyms:</p>", unsafe_allow_html=True)
+        merge_synonyms = [item for sublist in synonyms for item in sublist]
+        unique_synonyms = list(set(merge_synonyms))
+        display_synonyms = ','.join(map(str, unique_synonyms))
+        st.markdown(display_synonyms)
+
+    with ant_col:
+        st.markdown("<p style='font-size: 2vw; font-weight: bold; color:#3a86ff'>Antonyms:</p>", unsafe_allow_html=True)
+        merge_antonyms = [item for sublist in antonyms for item in sublist]
+        unique_antonyms = list(set(merge_antonyms))
+        display_antonyms = ','.join(map(str, unique_antonyms))
+        st.markdown(display_antonyms)
+
 
 
 r2c1 = st.container(border=True, height=400)
 
 with r2c1:
     try:
-        display_word_meaning(word, definitions, synonyms, antonyms)
+        display_word_meaning(word, definitions, synonyms, antonyms, pos)
     except:
         pass
 
-if error == True:
+@st.experimental_dialog("REGISTER WORD")
+def word_register_screen(word, pos, definition):
+    col1, col2 = st.columns(2)
+    with col1:
+        dicword = st.text_input("WORD", value=word.upper())
+    with col2:
+        dicpsp = st.text_input("PARTS OF SPEECH", value=pos)
+    dicdefinition = st.text_area("DEFINITION", value=definition)
+    example = st.text_area("EXAMPLE")
+
+    if st.button("REGISTER"):
+        def record_word(dicword, dicpsp, dicdefinition, example):
+            db = firestore.client()
+            word_data = {
+                'word': dicword,
+                'psp': dicpsp,
+                'definition': dicdefinition,
+                'example': example,
+                'user': st.session_state.get('username'),
+                'letter': dicword[0]
+            }
+
+            print(word_data)
+            try:
+                document_id = dicword
+                db.collection("Words").document(document_id).set(word_data)
+            except:
+                st.error("Failed to Register.")
+
+        record_word(dicword, dicpsp, dicdefinition, example)
+        st.rerun()
+
+if error == False:
+  if st.button("Register This Word"):
+      word, definitions, synonyms, antonyms, pos = get_word_meaning(api_address, search_word)
+      word_register_screen(word, pos, definitions[0])
+
+elif error == True:
     st.error(error_message)

@@ -39,7 +39,7 @@ word_list = retrieve_words()
 # print(word_list)
 
 title = ("""<div style="text-align: center;">
-            <p style="color: #0077b6; font-size: 3vw; font-weight: bold">WORDLY</p>
+            <p style="color: #3a86ff; font-size: 3vw; font-weight: bold">WORDLY</p>
         </div>""")
 st.html(title)
 
@@ -58,7 +58,7 @@ def display_word_function():
             card = f"""
                     <div style="text-align: center; margin-bottom: 15vh">
                         <h1>{word_list[st.session_state.get("word")]['word'].upper()}</h1>
-                        <p>{word_list[st.session_state.get("word")]['psp']}</p>
+                        <p style='color: blue;'>{word_list[st.session_state.get("word")]['psp']}</p>
                         <p style="font-size: 24px; font-weight: bold">{word_list[st.session_state.get("word")]['definition']}</p>
                         <p>{word_list[st.session_state.get("word")]['example']}</p>
                     </div>
